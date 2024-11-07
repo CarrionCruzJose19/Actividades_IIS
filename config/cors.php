@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://127.0.0.1:5500'],  // Aquí agregas tu frontend
+    'allowed_origins' => ['http://localhost:4200'],  // Aquí agregas tu frontend
 
     'allowed_origins_patterns' => [],
     
