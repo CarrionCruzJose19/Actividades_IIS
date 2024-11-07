@@ -1,0 +1,100 @@
+<div class="container mt-5">
+    <form [formGroup]="reportForm">
+        <!-- Tipo de filtro (se asume que este es un filtro de búsqueda, no directamente relacionado con los campos de la tabla) -->
+        <div class="row w-50">
+            <div class="col">
+                <label for="cbxFilterType" class="form-label">Select Filter Type</label>
+                <select class="form-select w-20" id="cbxFilterType" formControlName="type">
+                    <option *ngFor="let filter of filters" [value]="filter.code">{{filter.name}}</option>
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary position-relative top-50 start-0">Apply Filter</button>
+            </div>
+        </div>
+
+        <!-- Campo para Titulo de la notificación -->
+        <div class="w-50">
+            <label for="txtTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="txtTitle" formControlName="titulo"
+                [formControl]="reportForm.controls.titulo">
+        </div>
+
+        <!-- Campo para Resumen de la notificación -->
+        <div class="w-50">
+            <label for="txtSummary" class="form-label">Summary</label>
+            <textarea class="form-control" id="txtSummary" formControlName="resumen"
+                [formControl]="reportForm.controls.resumen"></textarea>
+        </div>
+
+        <!-- Campo para la fecha de la notificación -->
+        <div class="w-50">
+            <label for="txtDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="txtDate" formControlName="fecha"
+                [formControl]="reportForm.controls.fecha">
+        </div>
+
+        <!-- Campo para la imagen de la notificación -->
+        <div class="w-50">
+            <label for="txtImage" class="form-label">Image</label>
+            <input type="file" class="form-control" id="txtImage" formControlName="imagen"
+                [formControl]="reportForm.controls.imagen">
+        </div>
+    </form>
+
+    <div class="mt-5">
+        <table mat-table [dataSource]="notices" class="mat-elevation-z8">
+
+            <!-- Columna para el ID de la Noticia -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let notice"> {{notice.id}} </td>
+            </ng-container>
+
+            <!-- Columna para el Título de la Noticia -->
+            <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef> Título </th>
+                <td mat-cell *matCellDef="let notice"> {{notice.titulo}} </td>
+            </ng-container>
+
+            <!-- Columna para el Resumen de la Noticia -->
+            <ng-container matColumnDef="resumen">
+                <th mat-header-cell *matHeaderCellDef> Resumen </th>
+                <td mat-cell *matCellDef="let notice"> {{notice.resumen}} </td>
+            </ng-container>
+
+            <!-- Columna para la Fecha de la Noticia -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let notice">
+                  <!-- Comprobamos si notice.fecha no es null -->
+                  <span *ngIf="notice.fecha; else noFecha">
+                    {{ notice.fecha}}
+                  </span>
+                  <!-- Si no hay fecha, mostramos un mensaje alternativo -->
+                  <ng-template #noFecha>
+                    Fecha no disponible
+                  </ng-template>
+                </td>
+              </ng-container>
+              
+              
+
+            <!-- Columna para la Imagen de la Noticia -->
+            <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                <td mat-cell *matCellDef="let notice">
+                  <img *ngIf="notice.imagen" [src]="notice.imagen" alt="Imagen de la Noticia" class="img-thumbnail" width="100">
+                  <span *ngIf="!notice.imagen">No disponible</span> <!-- Si no hay imagen, mostramos un mensaje -->
+                </td>
+              </ng-container>
+
+            <!-- Fila de Cabecera de la Tabla -->
+            <tr mat-header-row *matHeaderRowDef="['id','titulo','resumen', 'fecha', 'imagen']"></tr>
+
+            <!-- Fila de Datos de la Tabla -->
+            <tr mat-row *matRowDef="let row; columns: ['id','titulo','resumen', 'fecha', 'imagen']"></tr>
+        </table>
+    </div>
+
+</div>
